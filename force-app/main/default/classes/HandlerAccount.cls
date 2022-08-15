@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-14-2022
+ * @last modified on  : 08-15-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class HandlerAccount
@@ -14,7 +14,6 @@ public with sharing class HandlerAccount
             accountIdMap.put(acc_scope.Id, acc_scope);
             
         }
-        // Select accounts using the account Ids from the set
         
         Map<Id,AggregateResult> sumOfTotalAmount = new Map<Id,AggregateResult>([
                                                     SELECT AccountId Id, SUM(TotalAmount) total 
@@ -24,8 +23,7 @@ public with sharing class HandlerAccount
                                                     ]);
 
          List<Account> acctsToUpdate = new List<Account>();
-        // Iterate through accounts and their related orders (if present)
-        // to calculate Account Total Revenue
+       
         for (Account account : scope) 
         {   
             Decimal amount = (Decimal)sumOfTotalAmount.get(account.Id).get('total');

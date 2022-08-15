@@ -2,14 +2,14 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-14-2022
+ * @last modified on  : 08-15-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 global class BatchUpdateAccountsCA implements Database.Batchable<sObject>
 {
     global Database.QueryLocator start(Database.BatchableContext info)
     { 
-        // Interroger uniquement les comptes ayant au moins une commande avec le statut 'Ordered'
+        
       return Database.getQueryLocator(
             [
                 SELECT Id
