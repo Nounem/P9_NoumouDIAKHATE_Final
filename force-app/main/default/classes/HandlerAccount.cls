@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-15-2022
+ * @last modified on  : 08-20-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class HandlerAccount
@@ -42,8 +42,12 @@ public with sharing class HandlerAccount
  
         for(order ord: orderNewMap.values())
         {
-            amountMap.put(ord.AccountId, ord.TotalAmount);
-            ids.add(ord.AccountId);
+            if(ord.Status =='Ordered'){
+                amountMap.put(ord.AccountId, ord.TotalAmount);
+                ids.add(ord.AccountId);
+
+            }
+            
         } 
         List<Account> accountsToUpdate=new List<Account>();
         List<Account> accountList = new List<Account>([

@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-14-2022
+ * @last modified on  : 08-20-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
@@ -24,7 +24,7 @@ static void TestUpdateAccountTotalRevenue()
                                  WHERE Name LIKE 'TestAccount%' ];
           
           BatchUpdateAccountsCA batchCA = new BatchUpdateAccountsCA();
-        //  Id batchId = Database.executeBatch(batchCA); //executer le batch 
+        
           Database.QueryLocator ql = batchCA.start(null);
           batchCA.execute(null, scope);
           batchCA.finish(null);
