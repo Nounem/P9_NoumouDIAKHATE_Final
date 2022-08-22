@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-20-2022
+ * @last modified on  : 08-22-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
@@ -71,9 +71,6 @@ public static void createAccounts( Integer nbAccounts)
     }
 
     insert ordItems;
-  //  orders[0].Status = 'Ordered';
- //   update orders;
-
 }
 
 }
