@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-20-2022
+ * @last modified on  : 08-21-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class HandlerAccount
@@ -66,6 +66,16 @@ public with sharing class HandlerAccount
         {
             update accountsToUpdate;
         }
+    }
+
+    public static void updateNetAmount(List<order> orderNew)
+    {
+
+        for(order ord: orderNew)
+        {
+            ord.NetAmount__c = ord.ShipmentCost__c == null?ord.TotalAmount: ord.TotalAmount - ord.ShipmentCost__c; 
+            System.debug('netAmount '+ord.NetAmount__c);
+        } 
     }
 
 }
