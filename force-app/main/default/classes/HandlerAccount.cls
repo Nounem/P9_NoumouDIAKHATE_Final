@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-21-2022
+ * @last modified on  : 08-24-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class HandlerAccount
@@ -22,7 +22,7 @@ public with sharing class HandlerAccount
                                                     GROUP BY AccountId
                                                     ]);
 
-         List<Account> acctsToUpdate = new List<Account>();
+        List<Account> acctsToUpdate = new List<Account>();
        
         for (Account account : scope) 
         {   
