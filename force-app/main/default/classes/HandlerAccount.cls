@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-24-2022
+ * @last modified on  : 08-25-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class HandlerAccount
@@ -34,6 +34,7 @@ public with sharing class HandlerAccount
              // Update the database
             update acctsToUpdate;         
     }
+
     public static void updateAccountCA (Map<Id,order> orderNewMap)
     {
        
@@ -74,7 +75,7 @@ public with sharing class HandlerAccount
         for(order ord: orderNew)
         {
             ord.NetAmount__c = ord.ShipmentCost__c == null?ord.TotalAmount: ord.TotalAmount - ord.ShipmentCost__c; 
-            System.debug('netAmount '+ord.NetAmount__c);
+            System.debug('trigger netAmount '+ord.NetAmount__c);
         } 
     }
 

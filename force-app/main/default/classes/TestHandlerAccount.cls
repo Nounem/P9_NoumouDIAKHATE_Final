@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-24-2022
+ * @last modified on  : 08-25-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
@@ -10,7 +10,8 @@ private class TestHandlerAccount
 {
     @TestSetup
     static void makeData(){
-        TestDataFactory.createAccounts(700);
+        Account acc = TestDataFactory.createAccount2('TestAccount1');
+        List <Order> ordersList = TestDataFactory.createAccountWithOrders(200, acc.Id); 
     }
 
     @isTest
@@ -36,7 +37,8 @@ private class TestHandlerAccount
         Test.stopTest();
         for(Account acct : result)
         {
-        system.assertEquals(44000,acct.Chiffre_d_affaire__c,'Result should be 44000');
+        system.assertEquals(40000,acct.Chiffre_d_affaire__c,'Result should be 40000');
+        System.debug('acct.Chiffre_d_affaire__c '+acct.Chiffre_d_affaire__c);
         //Vérifiez que tous les comptes "chiffre d'affaire" ayant une commande avec le statut "Commandé" ont été mis à jour.
         }  
 
@@ -45,13 +47,18 @@ private class TestHandlerAccount
     @isTest
     static void TestCalculateAmount()
     {
-
         List<OrderItem> ordItem = [SELECT Id, Quantity, OrderId,Order.AccountId 
-        FROM OrderItem 
-        WHERE Order.Account.Name = 'TestAccount1'
-        ];
+                                   FROM OrderItem 
+                                    WHERE Order.Account.Name = 'TestAccount1'
+                                   ];
+        System.debug('ordItem -- '+ordItem);
 
         List <Order> ordersListToUpdate = new List <Order>();
+
+        Decimal SomTotalAmount =0; 
+        Decimal netToTest =0;
+        Decimal SomNetShipmentCost = 0;  
+       
         
         for(Order ord : [SELECT AccountId, ShipmentCost__c,TotalAmount,NetAmount__c 
                         FROM Order 
@@ -59,30 +66,32 @@ private class TestHandlerAccount
         {
             ord.Status = 'Ordered';
             ordersListToUpdate.add(ord);
+
+            System.debug('shipcost'+ ord.ShipmentCost__c);
+
+            SomTotalAmount += ord.TotalAmount;
+            SomNetShipmentCost += ord.ShipmentCost__c ; 
+            netToTest = SomTotalAmount - SomNetShipmentCost;
+
         }
 
         Test.startTest();
         update ordersListToUpdate; 
         Test.stopTest();  
 
-        System.assertEquals(22000, ordersListToUpdate[0].TotalAmount) ; 
-        System.debug('TotalAmount'+ordersListToUpdate[0].TotalAmount);
-     
-        Account result = [SELECT Id, Chiffre_d_affaire__c
-                             FROM Account
-                             WHERE Id =: ordItem[0].Order.AccountId ];  
+        //  (200 orders * 200 unitprice)- 500*20 = 36000
 
-        
-        System.assertEquals(22000 ,result.Chiffre_d_affaire__c);
-        System.debug('Chiffre_d_affaire'+result.Chiffre_d_affaire__c);
+       
+        System.assertEquals(40000,  SomTotalAmount) ; 
+        System.debug('result SomTotalAmount '+ SomTotalAmount);
 
 
-        List<Order> resultOrder = [SELECT AccountId, ShipmentCost__c,TotalAmount,NetAmount__c 
-                                   FROM Order 
-                                   WHERE Account.Name = 'TestAccount1' ];
+        System.assertEquals(4000 ,SomNetShipmentCost);
+        System.debug('SomNetShipmentCost -- '+SomNetShipmentCost);
 
-        System.debug('NetAmount__c'+resultOrder[0].NetAmount__c);
-        System.assertEquals(21980 ,resultOrder[0].NetAmount__c);
+
+        System.debug('netToTest '+netToTest);
+        System.assertEquals(36000 ,netToTest);
 
     }
 

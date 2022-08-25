@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-22-2022
+ * @last modified on  : 08-25-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
@@ -10,7 +10,8 @@ private class TestMyTeamOrdersController
 {
     @TestSetup
     static void makeData(){
-        TestDataFactory.createAccounts(700);
+        Account acc = TestDataFactory.createAccount2('TestAccount1');
+        List <Order> ordersList = TestDataFactory.createAccountWithOrders(200, acc.Id); 
     }
 
     @isTest

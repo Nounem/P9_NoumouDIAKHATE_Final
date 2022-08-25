@@ -2,75 +2,58 @@
  * @description       : 
  * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
  * @group             : 
- * @last modified on  : 08-22-2022
+ * @last modified on  : 08-25-2022
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 @isTest
 public with sharing class TestDataFactory{
 
+public static Account createAccount2(String name) {
+    Account account = new Account( Name = name);
+    insert account;
+    return account;
+}
 
-public static void createAccounts( Integer nbAccounts)
-{
+
+public static List<Order> createAccountWithOrders(Integer numberOrders, Id accountId){
+        
     List<Order> orders = new List<Order>();
-    List<OrderItem> ordItems = new List<OrderItem>();
-    List<Account> accountList = new List<Account>();
-
-    for (Integer i=0;i< nbAccounts;i++) {
-
-        Account acct = new Account(Name = 'TestAccount'+i);   
-        accountList.add(acct);
-    }
-    
-    insert accountList;
-    
-    for (Account acc : accountList) {
-
-        orders.add(new Order(
-            AccountId = acc.Id,
+    for(Integer i=0; i<numberOrders; i++) {
+        Order order = new Order(
+            AccountId = accountId,
             Pricebook2Id = Test.getStandardPricebookId(),
-            Status = 'Draft',
+            status = 'draft',
             ShipmentCost__c = 20, 
-            EffectiveDate = System.today()
-        )
-      );
-
+            effectiveDate = Date.today()
+        );
+        orders.add(order);
     }
     insert orders;
 
-    Product2 pd = new Product2(
-                                Name = 'ProductTest',
-                                Family = 'family',
-                                IsActive = true
-                            );
-    insert pd;
+    Product2 product2 = new Product2(
+        Name = 'ProductTest',
+        Family = 'family',
+        IsActive = true
+    );
+    insert product2;
 
-    PricebookEntry pbe = new PricebookEntry(
-                                            Pricebook2Id = Test.getStandardPricebookId(),
-                                            Product2Id = pd.Id,
-                                            UnitPrice = 50000, 
-                                            IsActive = true
-                                        );
-    insert pbe;
-
-    for (Order o : orders)
-    {
-            ordItems.add(new OrderItem(
-                                        OrderId = o.Id,
-                                        PriceBookEntryId = pbe.Id,
-                                        Quantity = 10, 
-                                        UnitPrice = 200
-                                    )
-                        );
-            ordItems.add(new OrderItem(
-                            OrderId = o.Id,
-                            PriceBookEntryId = pbe.Id,
-                            Quantity = 20, 
-                            UnitPrice = 1000
-                        )
-            );
+    PricebookEntry pricebookEntry = new PricebookEntry(
+        Pricebook2Id = Test.getStandardPricebookId(),
+        Product2Id = product2.Id,
+        UnitPrice = 200, 
+        IsActive = true
+    );
+    insert pricebookEntry; 
+    
+    List<OrderItem> items = new List<OrderItem>();
+    for(Order order: orders) {
+        OrderItem item = new OrderItem (OrderId = order.Id, PricebookEntryId = pricebookEntry.Id, Quantity=1, UnitPrice = 200);
+        items.add(item);
     }
-
-    insert ordItems;
-}
+    insert items;     
+    
+    update orders;
+    return orders;
+}   
 
 }
