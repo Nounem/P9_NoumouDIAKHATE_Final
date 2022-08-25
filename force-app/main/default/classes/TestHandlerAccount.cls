@@ -79,7 +79,7 @@ private class TestHandlerAccount
         update ordersListToUpdate; 
         Test.stopTest();  
 
-        //  (200 orders * 200 unitprice)- 500*20 = 36000
+        //  (200 orders * 200 unitprice)- 200*20 = 36000
 
        
         System.assertEquals(40000,  SomTotalAmount) ; 
